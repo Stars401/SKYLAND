@@ -1,0 +1,14 @@
+{
+  "identifier": "remote-client",
+  "description": "Allow notifications and window controls for client-mode remote pages (cloud server)",
+  "windows": ["main"],
+  "remote": {
+    "urls": ["http://*:*", "https://*:*"]
+  },
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-set-focus",
+    "allow-notify-windows"
+  ]
+}

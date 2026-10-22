@@ -1,0 +1,21 @@
+{
+  "identifier": "default",
+  "description": "Capability for the main window and tray",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus",
+    "core:window:allow-start-dragging",
+    "dialog:default",
+    "allow-notify-windows",
+    "allow-save-workflow-file",
+    "allow-get-app-config",
+    "allow-save-app-config",
+    "allow-restart-app",
+    "allow-discover-lan-servers",
+    "allow-pick-directory"
+  ]
+}

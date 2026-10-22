@@ -1,0 +1,759 @@
+/* ═══════════════════════════════════════════════════════════════
+   SKYLAND Node Flow — Image Generation Stylesheet
+   Node-based visual workflow editor for AI image generation
+   Design: Cursor / Linear / Blender node editor dark theme
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   App Layout
+   ═══════════════════════════════════════════════════════════════ */
+#nodes-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-window);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  position: relative;
+}
+
+/* Canvas + Sidebar horizontal layout */
+.nodes-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Toolbar — Top Bar (48px)
+   ═══════════════════════════════════════════════════════════════ */
+.nodes-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 48px;
+  flex-shrink: 0;
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 10;
+}
+
+/* Back button reuses .img-back-btn from image.css;
+   ensure consistent sizing within nodes toolbar */
+.nodes-toolbar .img-back-btn {
+  flex-shrink: 0;
+}
+
+.nodes-toolbar-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nodes-hint {
+  flex: 1;
+  text-align: right;
+  font-size: 14.4px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 4px;
+}
+
+/* ─── Toolbar Buttons (Save/Load) ─── */
+.nodes-toolbar .img-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14.4px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nodes-toolbar .img-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+.nodes-toolbar .img-btn:active {
+  transform: scale(0.97);
+}
+.nodes-toolbar .img-btn-generate {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+  font-weight: 500;
+}
+.nodes-toolbar .img-btn-generate:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* ─── Run Button Loading State ─── */
+#nodes-btn-run {
+  position: relative;
+  flex-shrink: 0;
+}
+
+#nodes-btn-run.loading {
+  opacity: 0.75;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+#nodes-btn-run .nodes-btn-spinner {
+  display: none;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+#nodes-btn-run.loading .nodes-btn-spinner {
+  display: inline-block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Canvas Area
+   Connection lines and node selection highlights are drawn
+   via Canvas API — no CSS needed for those.
+   ═══════════════════════════════════════════════════════════════ */
+.nodes-canvas-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-window);
+  /* Dot grid background — classic node-editor feel */
+  background-image: radial-gradient(circle, var(--border-subtle) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Non-modal feedback for rejected drops and local graph actions. */
+.nodes-graph-notice {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 120;
+  max-width: min(420px, calc(100% - 32px));
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-sidebar);
+  color: var(--text-secondary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  font-size: 14.4px;
+  line-height: 1.4;
+  text-align: center;
+  word-break: break-word;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.nodes-graph-notice.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.nodes-graph-notice[data-kind="success"] {
+  border-color: color-mix(in srgb, var(--success) 45%, var(--border));
+  color: var(--success);
+}
+
+.nodes-graph-notice[data-kind="warning"] {
+  border-color: color-mix(in srgb, var(--warning) 45%, var(--border));
+  color: var(--warning);
+}
+
+#nodes-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: default;
+  touch-action: none;
+}
+
+/* Cursor states for canvas panning */
+#nodes-canvas.space-down {
+  cursor: grab;
+}
+
+#nodes-canvas.panning {
+  cursor: grabbing;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Search Panel — Floating, Top-Center
+   Triggered by Tab key; lists available node types to add.
+   ═══════════════════════════════════════════════════════════════ */
+.nodes-search-panel {
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  margin-left: -140px;           /* center: -half of 280px */
+  width: 280px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  overflow: hidden;
+  animation: nodesPanelFadeIn 0.15s ease;
+}
+
+#nodes-search-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 15.6px;
+  font-family: var(--font-body);
+  outline: none;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+
+#nodes-search-input:focus {
+  border-bottom-color: var(--accent);
+}
+
+#nodes-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ─── Search List ─── */
+.nodes-search-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px;
+}
+
+/* ─── Search Items ─── */
+.nodes-search-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.nodes-search-item:hover {
+  background: var(--bg-hover);
+}
+
+.nodes-search-item.selected {
+  background: var(--accent-light);
+}
+
+.nodes-search-item-name {
+  font-size: 15.6px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nodes-search-item.selected .nodes-search-item-name {
+  color: var(--accent);
+}
+
+.nodes-search-item-desc {
+  font-size: 13.2px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nodes-search-empty {
+  padding: 20px 12px;
+  font-size: 14.4px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Property Sidebar — Houdini-style Right Panel
+   Dedicated sidebar, not a floating popup. Toggle with P key.
+   ═══════════════════════════════════════════════════════════════ */
+.nodes-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-sidebar);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  transition: width 0.2s ease, opacity 0.2s ease;
+  z-index: 50;
+}
+
+.nodes-sidebar.collapsed {
+  width: 0;
+  opacity: 0;
+  border-left: none;
+}
+
+/* ─── Sidebar Header ─── */
+.nodes-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--bg-sidebar);
+}
+
+.nodes-sidebar-header > span {
+  font-size: 15.6px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+#nodes-prop-close {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 21.6px;
+  line-height: 1;
+  transition: all 0.1s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+#nodes-prop-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ─── Sidebar toggle button (visible when collapsed) ─── */
+.nodes-sidebar-toggle {
+  position: absolute;
+  top: 56px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  transition: all 0.15s ease;
+}
+
+.nodes-sidebar-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+/* ─── Panel Body (form area) ─── */
+.nodes-prop-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;  /* 130% of original 12px */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Property Form Elements
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Field Group (label + input) ─── */
+.nodes-prop-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Field Label ─── */
+.nodes-prop-label {
+  font-size: 16.8px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Text Input ─── */
+.nodes-prop-input {
+  width: 100%;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 20.4px;  /* 130% of original 13px */
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nodes-prop-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+.nodes-prop-input::placeholder {
+  color: var(--text-muted);
+}
+
+.nodes-prop-field-linked {
+  padding: 8px;
+  border: 1px solid var(--accent-light);
+  border-radius: 6px;
+  background: var(--accent-light);
+}
+
+.nodes-prop-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  border-style: dashed;
+}
+
+.nodes-prop-linked-hint {
+  margin-top: 5px;
+}
+
+/* ─── Select Dropdown ─── */
+select.nodes-prop-input {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+select.nodes-prop-input option {
+  background: var(--bg-sidebar);
+  color: var(--text-primary);
+}
+
+/* ─── Textarea (for prompt nodes) ─── */
+.nodes-prop-textarea {
+  width: 100%;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 20.4px;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  min-height: 60px;
+  max-height: 200px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nodes-prop-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+.nodes-prop-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.nodes-prop-result-textarea {
+  min-height: 116px;
+  max-height: 280px;
+  line-height: 1.55;
+  cursor: text;
+  white-space: pre-wrap;
+}
+
+.nodes-prop-result-textarea:read-only {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+}
+
+.nodes-output-running {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--warning);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.nodes-output-running strong {
+  color: var(--warning);
+  font-size: 15.6px;
+}
+
+.nodes-output-running span {
+  color: var(--text-muted);
+  font-size: 14.4px;
+}
+
+.nodes-output-running b {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Hint text below a field ─── */
+.nodes-prop-hint {
+  font-size: 13.2px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ─── Section title within prop body ─── */
+.nodes-prop-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ─── Horizontal field row ─── */
+.nodes-prop-row {
+  display: flex;
+  gap: 8px;
+}
+
+.nodes-prop-row .nodes-prop-field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─── Action buttons within prop panel ─── */
+.nodes-prop-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.nodes-prop-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14.4px;
+  font-family: var(--font-body);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.nodes-prop-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.nodes-prop-btn:active {
+  transform: scale(0.97);
+}
+
+.nodes-folder-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.nodes-folder-status {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 13.2px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.nodes-prop-check {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14.4px;
+}
+
+.nodes-prop-btn.danger {
+  color: var(--error);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.nodes-prop-btn.danger:hover {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: var(--error);
+  color: var(--error);
+}
+
+/* ─── Image preview (for output nodes) ─── */
+.nodes-prop-preview {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
+.nodes-prop-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.nodes-prop-preview-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  font-size: 14.4px;
+  color: var(--text-muted);
+}
+
+/* ─── Node type badge in prop header ─── */
+.nodes-prop-node-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--accent-light);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ─── Divider ─── */
+.nodes-prop-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 4px 0;
+  border: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Scrollbar Styling — Thin 3px
+   Applied globally within #nodes-app for consistency
+   ═══════════════════════════════════════════════════════════════ */
+#nodes-app ::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+#nodes-app ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#nodes-app ::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+#nodes-app ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Firefox */
+#nodes-app * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes nodesPanelFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .nodes-hint {
+    display: none;
+  }
+
+  .nodes-search-panel {
+    width: calc(100% - 24px);
+    left: 12px;
+    margin-left: 0;
+    max-height: 320px;
+  }
+
+  .nodes-sidebar {
+    width: min(320px, calc(100vw - 24px));
+  }
+}
+
+/* ── 节点流操作指南浮层 ── */
+.nodes-help-modal { min-width: 380px; max-width: 460px; }
+.nodes-help-table { width: 100%; border-collapse: collapse; font-size: 15.6px; }
+.nodes-help-table td { padding: 7px 8px; border-bottom: 1px solid var(--border-subtle); color: var(--text-primary); }
+.nodes-help-table tr:last-child td { border-bottom: none; }
+.nodes-help-key {
+  font-family: var(--font-mono); font-weight: 700;
+  color: var(--accent); white-space: nowrap; width: 120px;
+}

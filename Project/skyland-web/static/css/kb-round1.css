@@ -1,0 +1,64 @@
+/* Round 1 styles bundled separately so the upstream kb.css diff stays small.
+ * R1.6 - Smooth MD-theme switch (no white flash)
+ * R1.4 - Breadcrumb
+ * R1.3 - Resizable image wrapper
+ * R1.7 - KB overview card
+ * R1.2 - Search hit <mark>
+ */
+
+/* R1.6: cross-fade when the MD theme class changes. */
+.kb-editor-area,
+.kb-editor-area h1, .kb-editor-area h2, .kb-editor-area h3,
+.kb-editor-area h4, .kb-editor-area h5, .kb-editor-area h6,
+.kb-editor-area p, .kb-editor-area li, .kb-editor-area td, .kb-editor-area blockquote,
+.kb-editor-area code, .kb-editor-area pre {
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.md-theme-night .kb-editor-area {
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+/* R1.4: breadcrumb strip below the doc-title bar. */
+.kb-breadcrumb {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
+  padding: 6px 16px 4px; font-size: 14.4px;
+  color: var(--text-tertiary, #888); user-select: none;
+  border-bottom: 1px solid var(--border, #eee);
+  background: var(--bg-sidebar, transparent); min-height: 24px;
+}
+.kb-breadcrumb-item { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: background 120ms ease, color 120ms ease; }
+.kb-breadcrumb-item:hover { background: var(--bg-hover, #f0f0f0); color: var(--text-primary, #333); }
+.kb-breadcrumb-item.current { cursor: default; font-weight: 600; color: var(--text-primary, #333); }
+.kb-breadcrumb-item.current:hover { background: transparent; }
+.kb-breadcrumb-sep { color: var(--text-tertiary, #aaa); opacity: .6; }
+.kb-breadcrumb-empty { font-style: italic; }
+
+/* R1.3: image wrapper with drag-handle for live resize. */
+.kb-img-wrap { position: relative; display: inline-block; max-width: 100%; margin: 4px 0; line-height: 0; }
+.kb-img-wrap > img { display: block; max-width: 100%; height: auto; }
+.kb-img-wrap.kb-img-resizing { outline: 2px solid var(--accent, #3370FF); outline-offset: 1px; }
+.kb-img-handle {
+  position: absolute; width: 10px; height: 10px;
+  background: var(--accent, #3370FF); border-radius: 50%;
+  border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  display: none; z-index: 5;
+}
+.kb-img-wrap.kb-img-active .kb-img-handle,
+.kb-img-wrap.kb-img-resizing .kb-img-handle { display: block; }
+.kb-img-handle.se { right: -5px; bottom: -5px; cursor: nwse-resize; }
+.kb-img-handle.sw { left:  -5px; bottom: -5px; cursor: nesw-resize; }
+.kb-img-handle.ne { right: -5px; top:    -5px; cursor: nesw-resize; }
+.kb-img-handle.nw { left:  -5px; top:    -5px; cursor: nwse-resize; }
+
+/* R1.7: KB overview card row. */
+.kb-overview {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;
+  padding: 8px 4px 12px; border-bottom: 1px solid var(--border, #eee); margin-bottom: 8px;
+}
+.kb-overview-cell { display: flex; flex-direction: column; gap: 2px; padding: 6px 8px; border-radius: 6px; background: var(--bg-hover, #f5f7fa); }
+.kb-overview-num { font-size: 19.2px; font-weight: 600; color: var(--text-primary, #333); }
+.kb-overview-label { font-size: 13.2px; color: var(--text-tertiary, #888); }
+
+/* R1.2: search result highlight. */
+mark.kb-search-mark { background: rgba(255, 213, 79, .55); color: inherit; padding: 0 1px; border-radius: 2px; }
+html.dark mark.kb-search-mark { background: rgba(255, 213, 79, .28); }

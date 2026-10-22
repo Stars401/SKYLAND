@@ -1,0 +1,33 @@
+[package]
+name = "skyland-lib"
+version.workspace = true
+edition.workspace = true
+description = "Skyland 系统共享库"
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+prost = { workspace = true }
+tonic = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+regex = { workspace = true }
+glob = { workspace = true }
+chrono = { workspace = true }
+reqwest = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+tokio-stream = { workspace = true }
+tokio = { workspace = true }
+
+# Windows 系统通知 — 与 tauri 技术栈共用同一 windows crate 版本（不引第二棵依赖树）
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.61", features = ["Data_Xml_Dom", "UI_Notifications"] }
+
+[build-dependencies]
+tonic-build = "0.8"
+protoc-bin-vendored = "3"
+
+[dev-dependencies]
+tempfile = { workspace = true }

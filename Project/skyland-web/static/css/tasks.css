@@ -1,0 +1,101 @@
+/* ═══════════════════════════════════════════════════════════════
+   待时任务 — Styles（复用 todo.css 变量体系）
+   ═══════════════════════════════════════════════════════════════ */
+
+.tasks-new-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px; border: none;
+  background: var(--accent); color: #fff;
+  font-size: 15.6px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.tasks-new-btn:hover { opacity: 0.85; }
+
+.tasks-summary {
+  max-width: 700px; margin: 0 auto 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+
+.task-card {
+  display: flex; gap: 10px; align-items: stretch;
+  background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+  transition: border-color 0.15s ease;
+}
+.task-card:hover { border-color: var(--accent); }
+.task-card.disabled { opacity: 0.55; }
+.task-card-main { flex: 1; min-width: 0; }
+
+.task-card-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.task-card-name { font-weight: 700; font-size: 16.8px; color: var(--text-primary); }
+
+.task-toggle-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  cursor: pointer; flex-shrink: 0; border: none; padding: 0;
+}
+.task-toggle-dot.enabled { background: var(--success); box-shadow: 0 0 6px rgba(80, 200, 120, 0.5); }
+.task-toggle-dot.disabled { background: var(--border); }
+
+.task-skill-tag {
+  font-size: 13.2px; padding: 1px 8px; border-radius: 10px;
+  background: var(--bg-hover); color: var(--accent);
+}
+.task-schedule { font-size: 14.4px; color: var(--text-muted); margin-left: auto; }
+
+.task-card-prompt {
+  margin-top: 6px; font-size: 14.4px; color: var(--text-secondary);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.task-card-meta {
+  display: flex; gap: 14px; margin-top: 6px;
+  font-size: 13.2px; color: var(--text-muted);
+}
+.task-card-result {
+  margin-top: 8px; padding: 8px 10px; border-radius: 8px;
+  background: var(--bg-hover); font-size: 14.4px; color: var(--text-secondary);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.task-card-actions {
+  display: flex; flex-direction: column; gap: 4px; justify-content: center;
+}
+.task-card-actions button {
+  width: 28px; height: 28px; border-radius: 6px; border: none;
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  font-size: 15.6px; transition: all 0.15s ease;
+}
+.task-card-actions button:hover { background: var(--bg-hover); color: var(--accent); }
+.task-card-actions button[data-action="delete"]:hover { color: var(--error); }
+
+/* 星期多选 chips */
+.task-weekdays { display: flex; gap: 4px; flex-wrap: wrap; }
+.task-wd-chip {
+  padding: 4px 10px; border-radius: 12px; font-size: 14.4px;
+  background: var(--bg-hover); color: var(--text-muted);
+  cursor: pointer; user-select: none; border: 1px solid transparent;
+}
+.task-wd-chip.active {
+  background: var(--accent-light, rgba(51, 112, 255, 0.12));
+  color: var(--accent); border-color: var(--accent);
+}
+
+.task-dialog { max-width: 560px; }
+.task-dialog-hint {
+  margin-top: 8px; padding: 8px 12px; border-radius: 8px;
+  background: var(--bg-hover); font-size: 14.4px; color: var(--text-muted);
+}
+
+/* 执行记录弹窗 */
+.task-result-modal { max-width: 680px; }
+.task-result-body { max-height: 60vh; overflow-y: auto; }
+.task-result-msg { margin-bottom: 14px; }
+.task-result-role {
+  font-size: 13.2px; font-weight: 700; margin-bottom: 4px;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.task-result-msg.ai .task-result-role { color: var(--accent); }
+.task-result-text {
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--bg-hover); font-size: 15.6px; line-height: 1.6;
+  color: var(--text-primary); word-break: break-word;
+}

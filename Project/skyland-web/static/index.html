@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>SKYLAND</title>
+<link rel="icon" type="image/png" href="/img/logo.png?v=136">
+<link rel="stylesheet" href="/css/highlight.min.css?v=136">
+<link rel="stylesheet" href="/css/style.css?v=136">
+<link rel="stylesheet" href="/css/kb.css?v=136"><link rel="stylesheet" href="/css/kb-round1.css?v=136">
+<link rel="stylesheet" href="/css/todo.css?v=136">
+<link rel="stylesheet" href="/css/tasks.css?v=136">
+<link rel="stylesheet" href="/css/auth.css?v=136">
+<link rel="stylesheet" href="/css/image.css?v=136">
+<link rel="stylesheet" href="/css/nodes.css?v=136">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HOME VIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-home" class="view home-page">
+  <div class="home-bg" id="home-bg">
+    <div class="home-bg-img" id="home-bg-img"></div>
+    <div class="home-bg-shapes">
+      <div class="shape shape-circle" style="width:46vmin;height:46vmin;top:4%;right:14%"></div>
+      <div class="shape shape-circle" style="width:62vmin;height:62vmin;top:30%;right:-6%"></div>
+      <div class="shape shape-circle" style="width:22vmin;height:22vmin;bottom:8%;left:36%"></div>
+      <div class="shape shape-dot" style="width:9px;height:9px;top:32%;left:22%"></div>
+      <div class="shape shape-dot" style="width:6px;height:6px;bottom:28%;right:30%"></div>
+    </div>
+    <div class="home-bg-scrim"></div>
+  </div>
+  <div class="home-hero">
+    <h1 class="home-title">SKYLAND</h1>
+    <p class="home-subtitle" id="home-tip">智能开发工作台</p>
+  </div>
+  <button class="home-start" id="home-start-btn">开 始</button>
+  <div class="home-footer">
+    <input type="file" id="home-bg-input" accept="image/*" style="display:none">
+    <button class="home-theme-btn" id="home-bg-btn" title="更换主页背景">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    </button>
+    <button class="home-theme-btn" id="home-theme-toggle" title="切换主题">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="home-theme-btn" id="home-settings-btn" title="全局设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- 智能体实验室已改为主页抽屉上方的二级叠加抽屉（js/home.js Drawer 管理）。
+     保留空视图壳：/agent 旧路由回退 + scripts/structure-check.js 依赖此 id。 -->
+<div id="view-agent" class="view" style="display:none" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     IMAGE GENERATION VIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-image" class="view" style="display:none">
+  <div id="img-app">
+    <div class="img-sidebar" id="img-sidebar">
+      <div class="img-sidebar-header">
+        <button class="img-back-btn" id="img-back-agent" title="返回">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <span class="img-sidebar-title">AI 生图</span>
+      </div>
+      <div class="img-history" id="img-history"></div>
+    </div>
+    <div class="img-main" id="img-main">
+      <div class="img-canvas-area" id="img-canvas-area">
+        <div class="img-preview" id="img-preview">
+          <div class="img-empty" id="img-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <p>输入提示词后点击生成</p>
+          </div>
+        </div>
+      </div>
+      <div class="img-prompt-bar" id="img-prompt-bar">
+        <textarea id="img-prompt-input" placeholder="输入图片描述提示词..." rows="2"></textarea>
+        <div class="img-prompt-tags" id="img-prompt-tags"></div>
+        <div class="img-prompt-actions">
+          <button class="img-btn" id="img-btn-canvas" title="手绘画板">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          </button>
+          <button class="img-btn" id="img-btn-upload" title="上传参考图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </button>
+          <input type="file" id="img-ref-input" accept="image/*" style="display:none">
+          <button class="img-btn img-btn-generate" id="img-btn-generate">生成</button>
+        </div>
+      </div>
+    </div>
+    <div class="img-panel" id="img-panel">
+      <div class="img-panel-section">
+        <label class="img-panel-label">服务商</label>
+        <select id="img-provider-select" class="img-select"></select>
+      </div>
+      <div class="img-panel-section">
+        <label class="img-panel-label">分辨率</label>
+        <select id="img-size-select" class="img-select">
+          <option value="1024x1024">1024 × 1024 (方形)</option>
+          <option value="1792x1024">1792 × 1024 (横版)</option>
+          <option value="1024x1792">1024 × 1792 (竖版)</option>
+          <option value="2048x2048">2048 × 2048 (2K 方形)</option>
+          <option value="512x512">512 × 512 (快速)</option>
+          <option value="custom">自定义…</option>
+        </select>
+        <div id="img-custom-size" style="display:none;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13.2px;color:var(--text-secondary)">
+            <span>宽</span>
+            <input type="number" id="img-custom-w" min="64" max="8192" step="16" value="2048" style="width:76px" class="img-select">
+            <span>×</span>
+            <span>高</span>
+            <input type="number" id="img-custom-h" min="64" max="8192" step="16" value="1152" style="width:76px" class="img-select">
+          </div>
+          <div id="img-custom-hint" style="margin-top:4px;font-size:12px;color:var(--text-muted)"></div>
+        </div>
+      </div>
+      <div class="img-panel-section">
+        <label class="img-panel-label">质量</label>
+        <select id="img-quality-select" class="img-select">
+          <option value="standard">标准</option>
+          <option value="hd">高清</option>
+        </select>
+      </div>
+      <div class="img-panel-section">
+        <label class="img-panel-label">风格模板</label>
+        <select id="img-style-select" class="img-select">
+          <option value="">— 无 —</option>
+          <option value="photorealistic">真实照片</option>
+          <option value="concept-art">概念艺术</option>
+          <option value="anime">动漫</option>
+          <option value="oil-painting">油画</option>
+          <option value="watercolor">水彩</option>
+          <option value="3d-render">3D渲染</option>
+          <option value="cyberpunk">赛博朋克</option>
+          <option value="minimalist">极简</option>
+        </select>
+      </div>
+      <div class="img-panel-section">
+        <label class="img-panel-label">提示词标签</label>
+        <div class="img-tag-grid" id="img-tag-grid"></div>
+      </div>
+      <div class="img-panel-section">
+        <label class="img-panel-label">参考图</label>
+        <div class="img-ref-preview" id="img-ref-preview" style="display:none">
+          <img id="img-ref-thumb" src="" alt="参考图">
+          <button class="img-ref-clear" id="img-ref-clear">×</button>
+        </div>
+      </div>
+      <div class="img-panel-section">
+        <button class="img-btn" id="img-btn-settings" style="width:100%">服务商设置</button>
+      </div>
+    </div>
+  </div>
+  <!-- Canvas Drawing Modal -->
+  <div class="img-canvas-modal" id="img-canvas-modal" style="display:none">
+    <div class="img-canvas-modal-inner">
+      <div class="img-canvas-toolbar">
+        <button class="img-canvas-tool active" data-tool="pen" title="画笔">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+        </button>
+        <button class="img-canvas-tool" data-tool="eraser" title="橡皮">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M20 20H7L3 16c-1-1-1-3 0-4l7-7c1-1 3-1 4 0l8 8c1 1 1 3 0 4l-4 3"/></svg>
+        </button>
+        <input type="range" id="img-canvas-size" min="1" max="30" value="4" class="img-canvas-slider">
+        <input type="color" id="img-canvas-color" value="#3370FF" class="img-canvas-color">
+        <button class="img-canvas-tool" data-tool="clear" title="清空">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+        <button class="img-btn" id="img-canvas-use" style="margin-left:auto">用作参考图</button>
+        <button class="img-btn" id="img-canvas-close">关闭</button>
+      </div>
+      <canvas id="img-draw-canvas" width="512" height="512"></canvas>
+    </div>
+  </div>
+  <!-- 生图服务商设置已统一至 AISettings（ai-settings-overlay，从生图视图「服务商设置」或统一面板进入） -->
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NODE FLOW VIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-nodes" class="view" style="display:none">
+  <div id="nodes-app">
+    <div class="nodes-toolbar">
+      <button class="img-back-btn" id="nodes-back-agent" title="返回">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </button>
+      <span class="nodes-toolbar-title">节点流生图</span>
+      <span class="nodes-hint">Tab 添加节点 · 双击编辑 · 拖拽框选 · Alt+右键剪线 · P 属性面板 · Del 删除</span>
+      <button class="img-btn" id="nodes-btn-save" title="保存工作流">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        保存
+      </button>
+      <button class="img-btn" id="nodes-btn-load" title="加载工作流">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        加载
+      </button>
+      <button class="img-btn img-btn-generate" id="nodes-btn-run">执行工作流</button>
+    </div>
+    <div class="nodes-main">
+      <div class="nodes-canvas-wrap" id="nodes-canvas-wrap">
+        <canvas id="nodes-canvas"></canvas>
+      </div>
+      <!-- Node Search Panel (floating, top-center) -->
+      <div class="nodes-search-panel" id="nodes-search-panel" style="display:none">
+        <input type="text" id="nodes-search-input" placeholder="搜索节点..." autocomplete="off">
+        <div class="nodes-search-list" id="nodes-search-list"></div>
+      </div>
+      <!-- Property Sidebar (Houdini-style right panel) -->
+      <div class="nodes-sidebar" id="nodes-prop-panel">
+        <div class="nodes-sidebar-header">
+          <span id="nodes-prop-title">属性</span>
+          <button id="nodes-prop-close" title="收起 (P)">×</button>
+        </div>
+        <div class="nodes-prop-body" id="nodes-prop-body"></div>
+      </div>
+      <!-- Sidebar toggle button (visible when sidebar is collapsed) -->
+      <button class="nodes-sidebar-toggle" id="nodes-sidebar-toggle" title="展开属性面板 (P)" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 12h18M12 3v18"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAT VIEW (existing app, wrapped as sub-view)
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-chat" class="view" style="display:none">
+<div id="app">
+  <aside id="sidebar">
+    <div class="sb-brand"><span class="sb-logo"></span><span class="sb-brand-name">SKYLAND</span>
+      <button class="sb-rail-toggle" id="btn-sidebar-rail" title="收起侧栏" aria-label="收起侧栏">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+      </button>
+    </div>
+    <button class="sb-new" id="btn-new-chat" aria-label="新建对话">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span class="sb-new-label">新对话</span>
+    </button>
+    <button class="sb-new sb-new-alt" id="btn-create-ws" aria-label="创建工作区">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+      <span class="sb-new-label">创建工作区</span>
+    </button>
+    <div class="sb-list-label" id="sb-ws-tree-label">工作区</div>
+    <nav id="ws-tree" aria-label="工作区与会话"></nav>
+    <div class="sb-list-label" id="sb-chats-label">会话</div>
+    <nav id="sb-chats" aria-label="历史对话列表"></nav>
+    <div class="sb-foot">
+      <button class="sb-icon-btn" id="btn-export-chats" title="导出对话" aria-label="导出对话">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+      <button class="sb-icon-btn" id="btn-import-chats" title="导入对话" aria-label="导入对话">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </button>
+      <input type="file" id="import-file-input" accept=".json" style="display:none">
+      <button class="sb-icon-btn" id="btn-back-home" title="返回主页" aria-label="返回主页">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+      <button class="sb-icon-btn" id="btn-settings" title="设置" aria-label="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </aside>
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+
+  <main id="main">
+    <header>
+      <button class="menu-btn" id="btn-chat-back" title="返回智能体实验室" aria-label="返回智能体实验室">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="menu-btn" id="btn-menu" aria-label="菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <h1 class="chat-title" id="chat-title">SKYLAND</h1>
+      <div class="hdr-right">
+        <span class="hdr-mode-chip" id="hdr-mode" title="当前访问模式">自动</span>
+        <select id="model-select" class="model-select" aria-label="选择模型"></select>
+        <span class="status-dot" id="status-dot"></span>
+        <button class="hdr-icon-btn" id="btn-info-toggle" title="切换右侧面板" aria-label="切换右侧面板">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
+        </button>
+        <button class="hdr-icon-btn" id="btn-chat-more" title="更多操作" aria-label="更多操作">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="chat">
+      <div id="welcome" class="welcome">
+        <div class="welcome-logo"></div>
+        <h2>SKYLAND</h2>
+        <p>你的 AI 开发助手</p>
+        <div class="welcome-prompts">
+          <button class="prompt-card" data-prompt="帮我初始化一个新项目，告诉我该从哪里开始、需要做哪些准备">初始化项目</button>
+          <button class="prompt-card" data-prompt="帮我分析当前项目的现状，指出可以改进的地方并给出具体建议">分析改进</button>
+          <button class="prompt-card" data-prompt="我要开始一个新项目，帮我梳理策划思路：目标、功能范围、里程碑和风险">准备策划</button>
+          <button class="prompt-card" id="prompt-card-random" data-prompt="">知识卡片</button>
+        </div>
+      </div>
+      <div id="messages"></div>
+    </div>
+
+    <div id="queue-indicator" class="queue-indicator" style="display:none">
+      <span class="queue-count" id="queue-count">0</span> 条消息排队中
+    </div>
+
+    <footer>
+      <div class="input-wrap">
+        <!-- 工作区行（ChatGPT 式 — 仅初始对话显示，点击可切换；对话开始后隐藏，工作区已锁定为本会话上下文） -->
+        <div class="composer-ws-row" id="composer-ws-row" style="display:none" role="button" tabindex="0" title="点击选择或更换工作区 — 智能体将在此目录执行命令、读写文件，会话数据保存在 .skyland/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" class="ws-row-icon"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span class="ws-row-label" id="composer-ws-label">选择工作区…</span>
+        </div>
+        <div class="chat-input-row">
+          <div class="chat-image-preview" id="chat-image-preview" style="display:none"></div>
+          <div class="chat-image-warning" id="chat-image-warning" style="display:none"></div>
+          <div class="chat-attachment-preview" id="chat-attachment-preview" style="display:none"></div>
+          <textarea id="input" rows="1" placeholder="输入消息..."></textarea>
+        </div>
+        <div class="input-bar">
+          <button id="btn-plus" class="ctrl-btn ctrl-btn-icon" title="添加图片或文件">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <input type="file" id="chat-file-input" accept="image/*" multiple style="display:none">
+          <input type="file" id="chat-attachment-input" accept=".txt,.md,.json,.yaml,.yml,.toml,.rs,.js,.ts,.tsx,.jsx,.css,.html,.xml,.py,.go,.java,.cpp,.h,.hpp,.cs,.sql,.sh,.bat,.ps1" multiple style="display:none">
+          <button id="btn-thinking" class="ctrl-btn" title="思考强度">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+            <span class="ctrl-label">medium</span>
+          </button>
+          <button id="btn-execution" class="ctrl-btn mode-auto" title="执行模式">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span class="ctrl-label">auto</span>
+          </button>
+          <button id="btn-websearch" class="ctrl-btn mode-auto" title="网络搜索" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span class="ctrl-label">搜索</span>
+          </button>
+          <button id="btn-workdir" class="ctrl-btn" title="工作目录（AI 生成文件的落点）">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="ctrl-label" id="workdir-label">目录</span>
+          </button>
+          <button id="send-btn" class="send-btn" aria-label="发送消息">
+            <svg class="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          </button>
+        </div>
+        <div class="composer-status" id="composer-status" aria-live="polite"></div>
+      </div>
+    </footer>
+    <div id="chat-rail" class="chat-rail"></div>
+  </main>
+
+  <aside id="info-bar">
+    <div class="info-bar-header">
+      <span class="info-section-title" style="margin:0">运行时</span>
+      <button class="info-collapse-btn" id="btn-info-collapse" title="收起" aria-label="收起信息栏">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">运行状态</div>
+      <div class="info-row"><span class="info-label">状态</span><span class="info-value" id="info-run-state">空闲</span></div>
+      <div class="info-row"><span class="info-label">时长</span><span class="info-value" id="info-run-dur">—</span></div>
+      <div class="info-row"><span class="info-label">本轮</span><span class="info-value" id="info-round">—</span></div>
+      <div class="info-row"><span class="info-label">工具调用</span><span class="info-value" id="info-tool-count">0</span></div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">模型与模式</div>
+      <div class="info-row"><span class="info-label">模型</span><span class="info-value" id="info-model">—</span></div>
+      <div class="info-row"><span class="info-label">模式</span><span class="info-value" id="info-mode">auto</span></div>
+      <div class="info-row"><span class="info-label">思考</span><span class="info-value" id="info-effort">medium</span></div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">上下文</div>
+      <div class="context-bar-wrap">
+        <div class="context-bar" id="context-bar" style="width:0%"></div>
+      </div>
+      <div class="context-text"><span id="context-used">0</span> / <span id="context-total">128k</span> tokens</div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">执行计划</div>
+      <div id="plan-list" class="task-list">
+        <div class="task-empty">暂无计划</div>
+      </div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">智能体</div>
+      <div class="agent-item">
+        <span class="agent-dot active"></span>
+        <span class="agent-name">主智能体</span>
+        <span class="agent-status" id="agent-status">空闲</span>
+      </div>
+      <div id="task-list" class="task-list">
+        <div class="task-empty">暂无子智能体</div>
+      </div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">会话附件</div>
+      <div id="info-attachments" class="info-attachments"><div class="task-empty">暂无附件</div></div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">输出内容</div>
+      <div id="info-outputs" class="info-outputs"><div class="task-empty">暂无输出</div></div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">来源</div>
+      <div id="info-sources" class="info-sources"><div class="task-empty">暂无来源</div></div>
+    </div>
+  </aside>
+</div>
+
+<button id="info-expand-btn" title="展开信息栏" aria-label="展开信息栏">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+</div>
+
+  <div id="settings-panel" class="settings-panel">
+    <div class="settings-header">
+      <span>设置</span>
+      <button class="settings-close" id="btn-settings-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="settings-layout">
+      <nav class="settings-nav" id="settings-nav">
+        <button class="settings-nav-item" data-spage="status"><span>状态</span></button>
+        <button class="settings-nav-item active" data-spage="models"><span>模型与搜索</span></button>
+        <button class="settings-nav-item" data-spage="appearance"><span>外观与通用</span></button>
+        <button class="settings-nav-item" data-spage="performance"><span>性能与执行</span></button>
+        <button class="settings-nav-item" data-spage="ai"><span>AI 能力</span></button>
+        <button class="settings-nav-item" data-spage="todo-sync"><span>待办事项</span></button>
+        <button class="settings-nav-item" data-spage="data"><span>数据目录</span></button>
+      </nav>
+      <div class="settings-content">
+
+        <div class="settings-page" data-spage="status" style="display:none">
+          <div class="status-refresh-row">
+            <button id="btn-status-refresh" class="toggle-btn" style="width:auto;padding:6px 16px">刷新</button>
+            <span class="setting-hint">每 5 秒自动刷新 · 状态页可见时生效</span>
+          </div>
+          <div id="status-cards"></div>
+        </div>
+
+        <div class="settings-page" data-spage="models">
+          <div id="provider-list-page">
+            <label class="setting-label">已配置的模型</label>
+            <div id="existing-providers" class="pe-provider-list"></div>
+            <button id="btn-provider-add" class="toggle-btn" style="width:100%;background:var(--accent);color:var(--accent-text)">+ 添加模型配置</button>
+          </div>
+          <div id="provider-edit-page" style="display:none">
+            <div class="provider-edit-header">
+              <button id="btn-provider-edit-back" class="toggle-btn" style="width:auto;padding:6px 12px">← 返回模型列表</button>
+              <strong id="provider-edit-title">添加模型配置</strong>
+            </div>
+            <div class="pe-section">
+              <label class="pe-section-title">厂商与名称</label>
+              <select id="provider-preset" class="font-select pe-input">
+                <option value="">-- 选择预设厂商 --</option>
+              </select>
+              <input type="text" id="provider-name" class="setting-input pe-input" placeholder="配置名称（修改/删除时按此识别；留空使用预设名）">
+              <div class="pe-hint">修改已有配置时，名称即身份；改名会迁移默认指向。</div>
+            </div>
+            <div class="pe-section">
+              <label class="pe-section-title">认证与端点</label>
+              <input type="password" id="provider-apikey" class="setting-input pe-input" placeholder="API Key">
+              <div class="pe-endpoint-row">
+                <input type="text" id="provider-baseurl" class="setting-input pe-input" placeholder="Base URL（如 https://api.deepseek.com）">
+                <label class="pe-check" title="勾选后不自动补 /v1：适用于地址已含版本路径（如 …/v1）或非标准路径的网关。未勾选时裸域名会自动补 /v1，已含路径则原样使用">
+                  <input type="checkbox" id="provider-fullurl"> 完整URL（不自动补 /v1）
+                </label>
+              </div>
+            </div>
+            <div class="pe-section">
+              <label class="pe-section-title">模型与上下文</label>
+              <select id="provider-model-list" class="font-select pe-input" style="display:none" multiple size="4"></select>
+              <input type="text" id="provider-model-name" class="setting-input pe-input" placeholder="模型名称（如 gpt-4o、deepseek-chat）">
+              <label class="pe-field-label">上下文长度（token）</label>
+              <input type="number" id="provider-context-length" class="setting-input pe-input" min="4096" max="16777216" step="1024" placeholder="例如 131072">
+            </div>
+            <div class="pe-footer">
+              <div id="provider-restart-row" style="display:none;align-items:center;gap:8px">
+                <button id="btn-restart-app" class="toggle-btn" style="width:auto;padding:6px 16px;background:var(--accent);color:var(--accent-text)">重启应用生效</button>
+                <span class="setting-hint">配置已写入文件，重启后生效</span>
+              </div>
+              <div id="provider-status" class="pe-status"></div>
+              <div class="pe-footer-btns">
+                <button id="btn-fetch-models" class="toggle-btn pe-btn">获取模型列表</button>
+                <button id="btn-test-provider" class="toggle-btn pe-btn">测试连接</button>
+                <span class="pe-spring"></span>
+                <button id="btn-cancel-edit" class="toggle-btn pe-btn" style="display:none">取消修改</button>
+                <button id="btn-save-provider" class="toggle-btn pe-btn-primary">保存</button>
+              </div>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">网络搜索</label>
+            <input type="password" id="search-apikey" class="setting-input" placeholder="Tavily API Key" style="margin-bottom:6px">
+            <div style="display:flex;gap:6px">
+              <button id="btn-save-search" class="toggle-btn" style="flex:1">保存</button>
+              <button id="btn-test-search" class="toggle-btn" style="flex:1">测试</button>
+            </div>
+            <div id="search-status" class="setting-hint" style="margin-top:4px"></div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">图片生成模型</label>
+            <div class="setting-hint" style="margin-bottom:8px">生图服务商、API Key 与失败自动重试次数（AI生图 / 节点流 / 实验室共用同一份配置）。</div>
+            <button id="btn-image-providers" class="toggle-btn" style="width:100%">打开生图模型设置</button>
+          </div>
+        </div>
+
+        <div class="settings-page" data-spage="appearance" style="display:none">
+          <div class="setting-group">
+            <label class="setting-label">主题模式</label>
+            <div class="toggle-row" style="margin-bottom:10px">
+              <button class="toggle-btn" data-global-theme="dark">深色</button>
+              <button class="toggle-btn" data-global-theme="light">浅色</button>
+              <button class="toggle-btn" id="auto-dark-toggle">自动</button>
+            </div>
+            <div id="auto-dark-config" style="display:none;margin-top:8px">
+              <label style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px">
+                深色模式时段:
+                <input type="number" id="dark-start" min="0" max="23" value="21" style="width:50px" class="kb-modal-input">
+                时 ~
+                <input type="number" id="dark-end" min="0" max="23" value="7" style="width:50px" class="kb-modal-input">
+                时
+              </label>
+              <p style="font-size:11px;color:var(--text-muted);margin-top:4px">在该时段内自动切换到深色模式（默认 21:00 ~ 07:00），点击保存后生效</p>
+            </div>
+            <div class="setting-hint" style="margin-top:6px">低饱和度设计 — 彩色只作语义标记；深色模式自动反色适配</div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">主题色</label>
+            <div class="color-picker">
+              <button class="color-swatch active" data-color="#3370FF" style="background:#3370FF"></button>
+              <button class="color-swatch" data-color="#00BFFF" style="background:#00BFFF"></button>
+              <button class="color-swatch" data-color="#808000" style="background:#808000"></button>
+              <button class="color-swatch" data-color="#98FB98" style="background:#98FB98"></button>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">字体（全局）</label>
+            <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+              <div class="font-select-box" id="global-font-box" style="flex:1;position:relative">
+                <button type="button" class="kb-modal-input font-select-btn" id="global-font-btn" style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px">
+                  <span id="global-font-label">系统默认</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="opacity:.6;flex:none"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <input type="hidden" id="global-font-family" value="system">
+                <div class="font-select-pop" id="global-font-pop" style="display:none">
+                  <input type="text" id="global-font-search" class="kb-modal-input" placeholder="搜索已安装字体…" style="margin:0 0 6px">
+                  <div class="font-select-list" id="global-font-list"></div>
+                </div>
+              </div>
+              <select id="global-font-weight" class="kb-modal-input" style="width:80px">
+                <option value="400">常规</option>
+                <option value="500">中等</option>
+                <option value="600">半粗</option>
+                <option value="700">粗体</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="range" id="global-font-size" min="12" max="18" value="14" class="slider" style="flex:1">
+              <span style="font-size:12px;color:var(--text-muted);white-space:nowrap"><span id="global-font-size-value">14</span>px</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">主页背景图</label>
+            <div class="home-bg-setting">
+              <div class="home-bg-thumb" id="home-bg-preview"></div>
+              <div class="home-bg-actions">
+                <div style="display:flex;gap:8px">
+                  <button id="btn-home-bg-select" class="toggle-btn" style="width:auto;padding:6px 16px">选择图片…</button>
+                  <button id="btn-home-bg-reset" class="toggle-btn" style="width:auto;padding:6px 16px">恢复默认</button>
+                </div>
+                <div class="setting-hint" style="margin-top:6px">自定义主页背景，仅保存在本机浏览器；建议横版图片，将自动压缩存储。也可点击主页右下角的图片图标更换。</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button id="home-appearance-save" class="kb-modal-btn kb-modal-btn-ok" style="flex:1">保存外观设置</button>
+          </div>
+        </div>
+
+        <div class="settings-page" data-spage="performance" style="display:none">
+          <div class="setting-group">
+            <label class="setting-label">模型上下文窗口</label>
+            <div class="toggle-row" id="ctx-length-presets">
+              <button class="toggle-btn" data-ctx="65536">64K</button>
+              <button class="toggle-btn active" data-ctx="131072">128K</button>
+              <button class="toggle-btn" data-ctx="262144">256K</button>
+              <button class="toggle-btn" data-ctx="524288">512K</button>
+              <button class="toggle-btn" data-ctx="1048576">1M</button>
+              <button class="toggle-btn" data-ctx="custom">自定义</button>
+            </div>
+            <div id="ctx-custom-wrap" style="display:none;margin-top:8px">
+              <input type="number" id="ctx-custom-input" class="setting-input" placeholder="输入 token 数（如 200000）" min="4096" max="16777216" step="1024">
+              <div class="setting-hint" style="margin-top:4px">示例：deepseek-flash = 131072（128K）· gpt-4o = 128000 · claude-3.5-sonnet = 200000</div>
+            </div>
+            <div class="setting-hint" style="margin-top:6px">控制右栏上下文条的总量与自动压缩阈值。须与模型实际窗口一致，过大导致 API 溢出报错。</div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">上下文压缩模型</label>
+            <select id="compact-model-select" class="model-select" style="width:100%">
+              <option value="">默认（当前对话模型）</option>
+            </select>
+            <div class="setting-hint" style="margin-top:6px">上下文占用达 90% 时自动把中段历史压缩为摘要（防溢出）。可指定一个便宜快速的小模型专职压缩以降低成本与延迟，留空则用当前对话模型。</div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">工具调用轮数限制</label>
+            <div class="toggle-row">
+              <button class="toggle-btn active" id="btn-rounds-off" data-rounds="off">无限制</button>
+              <button class="toggle-btn" id="btn-rounds-on" data-rounds="on">自定义</button>
+            </div>
+            <div id="rounds-slider-wrap" style="display:none;margin-top:10px">
+              <input type="range" id="rounds-slider" min="1" max="20" value="5" class="slider">
+              <span class="setting-hint">最大 <span id="rounds-value" class="setting-value">5</span> 轮</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">系统提示词</label>
+            <textarea id="system-prompt" class="setting-input" rows="5" placeholder="留空使用默认提示词" style="resize:vertical;font-family:var(--font-body);min-height:80px"></textarea>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">定时任务通知</label>
+            <div class="toggle-row">
+              <button class="toggle-btn active" id="task-poll-on">开启</button>
+              <button class="toggle-btn" id="task-poll-off">关闭</button>
+            </div>
+            <div class="setting-hint">定时任务完成后的桌面通知开关（即时生效）</div>
+          </div>
+        </div>
+
+        <div class="settings-page" data-spage="ai" style="display:none">
+          <div class="setting-group">
+            <label class="setting-label">Skill 技能容器</label>
+            <input type="text" class="setting-input" id="skills-path-display" readonly placeholder="加载中...">
+            <div class="setting-hint">技能为 SKILL.md 文件（front matter: name/title/description + Markdown 指令正文）。在容器目录增删 .md 文件即可扩展 AI 技能；内置技能首启自动释放且不覆盖同名自定义。</div>
+            <div id="skills-list" style="margin-top:8px"></div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">记忆导入（本机智能体配置）</label>
+            <div class="setting-hint" style="margin-bottom:8px">一键扫描本机 Claude Code / Codex CLI / Cursor / Gemini CLI / AGENTS.md 等配置与记忆文件，导入为技能（use_skill 可用）。</div>
+            <button id="btn-memory-scan" class="toggle-btn" style="width:100%">扫描本机智能体配置</button>
+            <div id="memory-list" style="margin-top:8px"></div>
+            <div id="memory-status" class="setting-hint" style="margin-top:4px"></div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">自定义子代理（spawn_agent）</label>
+            <input type="text" class="setting-input" id="agents-path-display" readonly placeholder="加载中...">
+            <div class="setting-hint">在容器目录放置 .md 文件扩展子代理类型（对齐 Claude Code 的 .claude/agents）：front matter 为 name / description / tools（read_file,glob,grep,web_search 子集，留空=全部）/ rounds（1-20，默认 8），正文即该代理的系统提示。内置类型：explore / researcher / general-purpose。</div>
+            <div id="agents-list" style="margin-top:8px"></div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">MCP 服务器</label>
+            <div class="setting-hint" style="margin-bottom:8px">登记外部 MCP 服务器（本期注入 AI 提示；工具实时调用后续开放）。server 模式下仅管理员可保存。</div>
+            <div id="mcp-list"></div>
+            <div style="display:flex;gap:6px;margin-top:8px">
+              <button id="btn-mcp-add" class="toggle-btn" style="flex:1">+ 添加服务器</button>
+              <button id="btn-mcp-save" class="toggle-btn" style="flex:1;background:var(--accent);color:var(--accent-text)">保存 MCP 配置</button>
+            </div>
+            <div id="mcp-status" class="setting-hint" style="margin-top:4px"></div>
+          </div>
+        </div>
+
+        <div class="settings-page" data-spage="todo-sync" style="display:none">
+          <div class="setting-group">
+            <label class="setting-label">数据源</label>
+            <select id="todo-sync-provider" class="kb-modal-input" style="width:100%">
+              <option value="memos">Memos（开源备忘录）</option>
+              <option value="flomo" disabled>flomo 浮墨（适配中）</option>
+              <option value="notion" disabled>Notion（适配中）</option>
+              <option value="obsidian" disabled>Obsidian Daily Notes（适配中）</option>
+            </select>
+            <div class="setting-hint" style="margin-top:6px">把笔记软件的备忘按日期合并进待办（幂等去重，可反复同步）；更多数据源持续适配。</div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">服务器地址（IP 或域名）</label>
+            <input type="text" id="todo-sync-url" class="setting-input" placeholder="如 http://192.168.1.10:5230">
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">认证方式</label>
+            <div class="toggle-row" style="margin-bottom:10px">
+              <button class="toggle-btn active" id="todo-sync-auth-token">访问令牌 Token</button>
+              <button class="toggle-btn" id="todo-sync-auth-password">用户名 + 密码</button>
+            </div>
+            <div id="todo-sync-token-wrap">
+              <input type="password" id="todo-sync-token" class="setting-input" placeholder="Access Token（Memos 设置页生成；留空保持不变）">
+              <div class="setting-hint" style="margin-top:4px">Memos 0.21+：设置 → 访问令牌 → 新建。</div>
+            </div>
+            <div id="todo-sync-password-wrap" style="display:none">
+              <input type="text" id="todo-sync-username" class="setting-input" placeholder="用户名" style="margin-bottom:6px">
+              <input type="password" id="todo-sync-password" class="setting-input" placeholder="密码（留空保持不变）">
+              <div class="setting-hint" style="margin-top:4px">使用 Memos 登录会话；凭据仅保存在本机用户数据目录。</div>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">自动轮询</label>
+            <div class="toggle-row">
+              <button class="toggle-btn" id="todo-sync-poll-off">关闭（默认）</button>
+              <button class="toggle-btn" id="todo-sync-poll-on">每 15 分钟拉取</button>
+            </div>
+            <div class="setting-hint" style="margin-top:6px">开启后程序运行期间每 15 分钟自动向云端拉取一次；拉到新条目会弹 Windows 通知。云端模式由服务端统一执行。</div>
+            <div class="setting-hint" id="todo-sync-lastsync" style="margin-top:4px"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button id="todo-sync-test" class="toggle-btn" style="flex:1;min-width:120px">测试连接</button>
+            <button id="todo-sync-now" class="toggle-btn" style="flex:1;min-width:120px">立即同步</button>
+            <button id="todo-sync-save" class="toggle-btn" style="flex:1;min-width:120px;background:var(--accent);color:var(--accent-text)">保存配置</button>
+          </div>
+          <div class="setting-hint" id="todo-sync-status" style="margin-top:8px"></div>
+        </div>
+
+        <div class="settings-page" data-spage="data" style="display:none">
+          <div class="setting-group">
+            <label class="setting-label">AI 对话数据目录</label>
+            <input type="text" class="kb-modal-input" id="global-conversations-path" value="SKYLAND/users/local/conversations" placeholder="对话存储目录" style="margin-bottom:6px">
+            <p style="font-size:11px;color:var(--text-muted)">对话记录存储位置（相对于项目根目录，重启生效）</p>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">LLM 配置文件</label>
+            <input type="text" class="kb-modal-input" id="global-config-path" value="SKYLAND/config/llm.toml" placeholder="配置文件路径" style="margin-bottom:6px">
+            <p style="font-size:11px;color:var(--text-muted)">Provider 配置、API Key、搜索设置存储位置（重启生效）</p>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">知识库数据目录</label>
+            <input type="text" class="kb-modal-input" id="global-userdata-path" value="SKYLAND/users/local" placeholder="知识库存储目录" style="margin-bottom:6px">
+            <p style="font-size:11px;color:var(--text-muted)">所有知识库文档和图片的存储位置（重启生效）</p>
+          </div>
+          <div class="setting-group">
+            <label class="setting-label">待办事项数据目录</label>
+            <input type="text" class="kb-modal-input" id="global-todo-path" value="SKYLAND/users/local/todo" placeholder="待办事项存储目录" style="margin-bottom:6px">
+            <p style="font-size:11px;color:var(--text-muted)">每日待办事项的存储位置（重启生效）</p>
+            <label class="setting-label" style="margin-top:12px">AI生图数据目录</label>
+            <input type="text" class="kb-modal-input" id="global-img-path" value="SKYLAND/users/local/images" placeholder="AI生图存储目录" style="margin-bottom:6px">
+            <p style="font-size:11px;color:var(--text-muted)">生成图片的存储位置（重启生效）</p>
+          </div>
+          <div id="auth-settings-section"></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button id="home-settings-save" class="kb-modal-btn kb-modal-btn-ok" style="flex:1">保存数据目录</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div id="settings-overlay" class="settings-overlay"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DRAWERS — 主页模块抽屉 + 智能体实验室叠加抽屉（js/home.js 管理）
+     交互：点击【开始】自底部滑出；抽屉外背景高斯模糊；二级抽屉叠加
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<div id="home-drawer" class="drawer" role="dialog" aria-label="功能模块" aria-hidden="true">
+  <div class="drawer-top">
+    <button class="drawer-back" id="drawer-home-back">返 回</button>
+  </div>
+  <div class="drawer-cards drawer-cards-3">
+    <button class="drawer-card" id="drawer-card-agent" data-drawer="lab">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span class="drawer-card-label">智能体</span>
+      <span class="drawer-card-desc">终端 · 生图 · 工作流 · 任务</span>
+    </button>
+    <button class="drawer-card" data-route="/kb">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <span class="drawer-card-label">技术知识库</span>
+      <span class="drawer-card-desc">Markdown 文档管理</span>
+    </button>
+    <button class="drawer-card" data-route="/todo">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <span class="drawer-card-label">待办事项</span>
+      <span class="drawer-card-desc">每日工作规划</span>
+    </button>
+  </div>
+</div>
+
+<div id="lab-drawer" class="drawer drawer-stacked" role="dialog" aria-label="智能体实验室" aria-hidden="true">
+  <div class="drawer-top">
+    <button class="drawer-back" id="drawer-lab-back">返 回</button>
+    <span class="drawer-heading">智能体实验室</span>
+    <button class="home-theme-btn" id="agent-global-settings" title="AI 全局设置" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+  <div class="drawer-cards drawer-cards-4">
+    <button class="drawer-card" data-route="/chat">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span class="drawer-card-label">Agent 终端</span>
+      <span class="drawer-card-desc">智能对话与工具调用</span>
+    </button>
+    <button class="drawer-card" data-route="/image">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <span class="drawer-card-label">AI生图</span>
+      <span class="drawer-card-desc">提示词驱动图像生成</span>
+    </button>
+    <button class="drawer-card" data-route="/nodes">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/></svg>
+      </div>
+      <span class="drawer-card-label">节点流生图</span>
+      <span class="drawer-card-desc">可视化节点工作流</span>
+    </button>
+    <button class="drawer-card" data-route="/tasks">
+      <div class="drawer-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      </div>
+      <span class="drawer-card-label">待时任务</span>
+      <span class="drawer-card-desc">定时任务 · AI 自动执行</span>
+    </button>
+  </div>
+</div>
+
+<!-- 全局保存反馈 toast（js/home.js SkyToast） -->
+<div id="sky-toast" class="sky-toast" role="status" aria-live="polite"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCHEDULED TASKS VIEW (待时任务)
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-tasks" class="view" style="display:none">
+<div class="todo-app">
+  <header class="todo-header">
+    <button class="todo-back-btn" id="tasks-back-agent" title="返回">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </button>
+    <h1 class="todo-title" style="flex:1">待时任务</h1>
+    <button class="tasks-new-btn" id="tasks-new-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 5v14M5 12h14"/></svg>
+      <span>新建任务</span>
+    </button>
+  </header>
+  <div class="todo-body">
+    <div class="tasks-summary" id="tasks-summary"></div>
+    <div class="todo-items" id="tasks-list"></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TODOLIST VIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-todo" class="view" style="display:none">
+<div class="todo-app">
+  <header class="todo-header">
+    <button class="todo-back-btn" id="todo-back-home" title="返回主页">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <nav class="todo-tabs" id="todo-tabs">
+      <button class="todo-tab active" data-todo-tab="today">今日</button>
+      <button class="todo-tab" data-todo-tab="timeline">时间线</button>
+      <button class="todo-tab" data-todo-tab="explore">发现</button>
+    </nav>
+    <div class="todo-progress-mini" id="todo-progress-mini">
+      <div class="todo-progress-bar"><div class="todo-progress-fill" id="todo-progress-fill" style="width:0%"></div></div>
+      <span class="todo-progress-text" id="todo-progress-text">0/0</span>
+    </div>
+  </header>
+  <div class="todo-subheader" id="todo-subheader">
+    <h1 class="todo-title" id="todo-date-display">今日待办</h1>
+    <div class="todo-date-nav">
+      <button class="todo-nav-btn" id="todo-prev-day" title="前一天">‹</button>
+      <button class="todo-nav-btn" id="todo-today-btn" title="今天">●</button>
+      <button class="todo-nav-btn" id="todo-next-day" title="后一天">›</button>
+      <button class="todo-nav-btn" id="todo-search-toggle" title="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
+      <button class="todo-nav-btn" id="todo-notify-test-btn" title="测试系统通知"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+    </div>
+  </div>
+  <div class="todo-body todo-view" id="todo-view-today">
+    <div class="todo-stats" id="todo-stats"></div>
+    <div class="todo-carryover" id="todo-carryover" style="display:none"></div>
+    <div class="todo-search-bar" id="todo-search-bar" style="display:none">
+      <input type="text" id="todo-search-input" placeholder="搜索所有待办事项..." class="kb-modal-input">
+      <button class="todo-search-close" id="todo-search-close">✕</button>
+    </div>
+    <div class="todo-filter-bar" id="todo-filter-bar"></div>
+    <div class="todo-items" id="todo-items"></div>
+    <div class="todo-search-results" id="todo-search-results" style="display:none"></div>
+  </div>
+  <div class="todo-editor-wrap" id="todo-editor-wrap">
+    <div class="todo-editor">
+      <textarea id="todo-quick-input" rows="2" placeholder="有什么要做的？（#分类  !!高优先  @09:00 提醒，Ctrl+Enter 添加）"></textarea>
+      <div class="todo-editor-preview" id="todo-editor-preview"></div>
+      <div class="todo-editor-bar">
+        <button class="todo-ed-btn" id="todo-ed-cat" title="插入分类（#）" aria-label="插入分类">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+        </button>
+        <button class="todo-ed-btn" id="todo-ed-pri" title="优先级（! 低 / !! 高）" aria-label="优先级">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>
+        </button>
+        <button class="todo-ed-btn" id="todo-ed-time" title="提醒时间（@HH:MM）" aria-label="提醒时间">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </button>
+        <span class="todo-ed-spring"></span>
+        <span class="todo-ed-hint">Ctrl+Enter 添加</span>
+        <button class="todo-editor-send" id="todo-quick-add-btn" title="添加 (Ctrl+Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+      <!-- 编辑器弹出菜单（分类/优先级/提醒共用容器，js/todo.js 管理） -->
+      <div class="todo-ed-menu" id="todo-ed-menu" style="display:none" role="menu"></div>
+    </div>
+  </div>
+  <div class="todo-view" id="todo-view-timeline" style="display:none">
+    <div class="todo-timeline-layout">
+      <aside class="todo-calendar" id="todo-calendar">
+        <div class="todo-cal-head">
+          <button class="todo-cal-nav" id="todo-cal-prev" title="上个月">‹</button>
+          <span class="todo-cal-title" id="todo-cal-title">—</span>
+          <button class="todo-cal-nav" id="todo-cal-next" title="下个月">›</button>
+        </div>
+        <div class="todo-cal-grid" id="todo-cal-grid"></div>
+        <div class="todo-cal-foot">
+          <button class="todo-cal-clear" id="todo-cal-clear" style="display:none">清除日期筛选</button>
+          <span class="todo-cal-hint">Ctrl+B 收放日历</span>
+        </div>
+      </aside>
+      <div class="todo-timeline-main">
+        <div class="todo-timeline-scroll">
+          <div class="todo-filter-bar" id="todo-timeline-tags"></div>
+          <div class="todo-items todo-timeline" id="todo-timeline"></div>
+          <button class="todo-load-more" id="todo-timeline-more" style="display:none">加载更早</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="todo-view" id="todo-view-explore" style="display:none">
+    <div class="todo-timeline-scroll">
+      <div class="todo-explore-head" id="todo-explore-head"></div>
+      <div class="todo-filter-bar" id="todo-explore-tags"></div>
+      <div class="todo-items todo-timeline" id="todo-explore-list"></div>
+      <button class="todo-load-more" id="todo-explore-more" style="display:none">加载更早</button>
+    </div>
+  </div>
+  <button class="todo-add-btn" id="todo-add-btn" title="添加事项">+</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     KNOWLEDGE BASE VIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="view-kb" class="view" style="display:none">
+<div class="kb-app">
+  <header class="kb-header">
+    <button class="kb-back-btn kb-mobile-menu" id="kb-menu-btn" title="菜单" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <button class="kb-back-btn" id="kb-back-home" title="返回主页">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <h1 class="kb-title" id="kb-title-text">技术知识库</h1>
+    <div class="kb-header-right">
+      <button class="kb-icon-btn" id="kb-theme-toggle" title="切换主题">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="kb-icon-btn" id="kb-settings-toggle" title="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="1"/><path d="M20.24 12.01a2.25 2.25 0 0 0-1.42-2.04 2.25 2.25 0 0 1-1.38-2.08 2.25 2.25 0 0 0-2.47-2.47 2.25 2.25 0 0 1-2.08-1.38 2.25 2.25 0 0 0-2.04-1.42 2.25 2.25 0 0 0-2.04 1.42 2.25 2.25 0 0 1-2.08 1.38 2.25 2.25 0 0 0-2.47 2.47 2.25 2.25 0 0 1-1.38 2.08 2.25 2.25 0 0 0-1.42 2.04 2.25 2.25 0 0 0 1.42 2.04 2.25 2.25 0 0 1 1.38 2.08 2.25 2.25 0 0 0 2.47 2.47 2.25 2.25 0 0 1 2.08 1.38 2.25 2.25 0 0 0 2.04 1.42 2.25 2.25 0 0 0 2.04-1.42 2.25 2.25 0 0 1 2.08-1.38 2.25 2.25 0 0 0 2.47-2.47 2.25 2.25 0 0 1 1.38-2.08 2.25 2.25 0 0 0 1.42-2.04z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="kb-body">
+    <!-- Sidebar -->
+    <aside class="kb-sidebar" id="kb-sidebar">
+      <div class="kb-sidebar-section">
+        <div class="kb-sidebar-header">
+          <span class="kb-sidebar-title">知识库</span>
+          <button class="kb-new-btn" id="kb-new-kb" title="新建知识库">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="kb-list" id="kb-list"></div>
+      </div>
+      <div class="kb-sidebar-section kb-tree-section" id="kb-tree-section" style="display:none">
+        <div class="kb-sidebar-header">
+          <span class="kb-sidebar-title" id="kb-current-name">文档</span>
+          <button class="kb-new-btn" id="kb-new-doc" title="新建文档">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </button>
+        </div>
+        <div class="kb-search-box">
+          <input type="text" id="kb-search-input" placeholder="搜索文档..." class="kb-search-input" />
+          <div class="kb-search-results" id="kb-search-results" style="display:none"></div>
+        </div>
+        <div class="kb-overview" id="kb-overview" aria-label="知识库总览"></div>
+        <div class="kb-tree" id="kb-tree"></div>
+      </div>
+      <!-- 技能库 — 内置 Skill 可视化查看/编辑（与知识库并列常驻） -->
+      <div class="kb-sidebar-section kb-skill-section" id="kb-skill-section">
+        <div class="kb-sidebar-header">
+          <span class="kb-sidebar-title">技能库 Skill</span>
+          <span class="kb-skill-count" id="kb-skill-count"></span>
+        </div>
+        <div class="kb-skill-list" id="kb-skill-list"></div>
+      </div>
+    </aside>
+
+    <!-- Resizer -->
+    <div class="kb-resizer" id="kb-resizer"></div>
+
+    <!-- Main Editor -->
+    <main class="kb-main" id="kb-main">
+      <!-- Empty State -->
+      <div class="kb-empty" id="kb-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48" style="opacity:0.3"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <p>选择或创建一个知识库</p>
+      </div>
+
+      <!-- 技能编辑器 — SKILL.md 原文（front matter + 正文），源码模式编辑 -->
+      <div class="kb-skill-editor" id="kb-skill-editor" style="display:none">
+        <div class="kb-skill-head">
+          <span class="kb-skill-title" id="kb-skill-title">技能</span>
+          <span class="kb-skill-tag" id="kb-skill-builtin"></span>
+          <span class="kb-skill-status" id="kb-skill-status"></span>
+          <button class="kb-modal-btn kb-modal-btn-ok" id="kb-skill-save">保存</button>
+        </div>
+        <div class="setting-hint" style="padding:0 18px 8px">SKILL.md 原文 — `---` 包裹的 front matter（name / title / description）+ Markdown 指令正文；保存后对智能体即时生效（use_skill）。</div>
+        <textarea id="kb-skill-content" class="kb-skill-content" spellcheck="false" placeholder="---&#10;name: my-skill&#10;title: 我的技能&#10;description: 技能说明&#10;---&#10;&#10;技能指令正文..."></textarea>
+      </div>
+
+      <!-- Editor -->
+      <div class="kb-editor" id="kb-editor" style="display:none">
+        <div class="kb-editor-header">
+          <input class="kb-doc-title" id="kb-doc-title" placeholder="文档标题" />
+          <div class="kb-view-toggle">
+            <button class="kb-view-btn active" data-mode="edit" title="编辑模式">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="kb-view-btn" data-mode="split" title="分屏模式">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+            </button>
+            <button class="kb-view-btn" data-mode="source" title="源码模式">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </button>
+          </div>
+          <div class="kb-breadcrumb" id="kb-breadcrumb" aria-label="文档路径"></div>
+        </div>
+        <div class="kb-toolbar" id="kb-toolbar">
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn" data-action="h1" title="标题1">H1</button>
+            <button class="kb-tb-btn" data-action="h2" title="标题2">H2</button>
+            <button class="kb-tb-btn" data-action="h3" title="标题3">H3</button>
+          </div>
+          <span class="kb-tb-sep"></span>
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn kb-tb-bold" data-action="bold" title="加粗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg></button>
+            <button class="kb-tb-btn" data-action="italic" title="斜体"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg></button>
+            <button class="kb-tb-btn" data-action="strike" title="删除线"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6"/><line x1="4" y1="12" x2="20" y2="12"/></svg></button>
+          </div>
+          <span class="kb-tb-sep"></span>
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn" data-action="color" title="文字颜色"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></button>
+            <button class="kb-tb-btn" data-action="highlight" title="背景色"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M9 11l-6 6v3h3l6-6"/><path d="M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg></button>
+            <button class="kb-tb-btn" data-action="fontsize" title="字号"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
+          </div>
+          <span class="kb-tb-sep"></span>
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn" data-action="quote" title="引用"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg></button>
+            <button class="kb-tb-btn" data-action="ul" title="无序列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <button class="kb-tb-btn" data-action="ol" title="有序列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+            <button class="kb-tb-btn" data-action="code" title="行内代码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></button>
+            <button class="kb-tb-btn" data-action="codeblock" title="代码块"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 9 7 12 9 15"/><polyline points="15 9 17 12 15 15"/></svg></button>
+          </div>
+          <span class="kb-tb-sep"></span>
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn" data-action="link" title="链接"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+            <button class="kb-tb-btn" data-action="image" title="图片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+            <button class="kb-tb-btn" data-action="table" title="表格"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+            <button class="kb-tb-btn" data-action="hr" title="分割线"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="12" x2="20" y2="12"/></svg></button>
+            <button class="kb-tb-btn" data-action="math" title="数学公式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button>
+          </div>
+          <span class="kb-tb-sep"></span>
+          <div class="kb-tb-group">
+            <button class="kb-tb-btn" data-action="source" title="查看源码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></button>
+          </div>
+        </div>
+        <div class="kb-editor-body" id="kb-editor-body">
+          <!-- Document Outline (TOC) -->
+          <div class="kb-outline" id="kb-outline">
+            <div class="kb-outline-header">
+              <span class="kb-outline-title">目录</span>
+              <button class="kb-outline-collapse" id="kb-outline-collapse" title="收起目录">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+            </div>
+            <div class="kb-outline-list" id="kb-outline-list"></div>
+          </div>
+          <!-- Outline expand button (when collapsed) -->
+          <button class="kb-outline-expand" id="kb-outline-expand" title="展开目录" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="kb-editor-scroll" id="kb-edit-pane">
+            <div class="kb-editor-area" id="kb-editor-area" contenteditable="true" spellcheck="false" data-placeholder="开始编写... 输入 # 可快速创建标题，**加粗**，> 引用等 Markdown 语法自动识别"></div>
+          </div>
+          <div class="kb-source-pane" id="kb-source-pane" style="display:none">
+            <pre class="kb-source-code" id="kb-source-code"></pre>
+          </div>
+        </div>
+        <div class="kb-status-bar">
+          <span id="kb-word-count">0 字</span>
+          <span id="kb-save-status">未修改</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="kb-settings-panel" id="kb-settings-panel">
+    <div class="kb-settings-header">
+      <span>编辑器设置</span>
+      <button class="kb-settings-close" id="kb-settings-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="kb-settings-body">
+      <div class="setting-group">
+        <label class="setting-label">文档主题</label>
+        <select id="kb-theme-select" class="font-select"></select>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">编辑器字体</label>
+        <select id="kb-font-select" class="font-select">
+          <option value="system">系统默认</option>
+          <option value="mono">等宽字体</option>
+        </select>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">字体大小</label>
+        <div class="toggle-row">
+          <button class="toggle-btn kb-fontsize-btn" data-size="13">13</button>
+          <button class="toggle-btn kb-fontsize-btn active" data-size="14">14</button>
+          <button class="toggle-btn kb-fontsize-btn" data-size="15">15</button>
+          <button class="toggle-btn kb-fontsize-btn" data-size="16">16</button>
+          <button class="toggle-btn kb-fontsize-btn" data-size="18">18</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">行高</label>
+        <div class="toggle-row">
+          <button class="toggle-btn kb-lineheight-btn" data-lh="1.5">紧凑</button>
+          <button class="toggle-btn kb-lineheight-btn active" data-lh="1.7">标准</button>
+          <button class="toggle-btn kb-lineheight-btn" data-lh="2.0">宽松</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">编辑器宽度</label>
+        <input type="range" id="kb-width-slider" min="600" max="1400" value="900" class="slider">
+        <span class="setting-hint"><span id="kb-width-value">900</span>px</span>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">侧边栏宽度</label>
+        <input type="range" id="kb-sidebar-slider" min="180" max="400" value="240" class="slider">
+        <span class="setting-hint"><span id="kb-sidebar-value">240</span>px</span>
+      </div>
+    </div>
+  </div>
+  <div class="kb-settings-overlay" id="kb-settings-overlay"></div>
+
+  <!-- Color Picker Dropdown -->
+  <div class="kb-color-dropdown" id="kb-color-dropdown" style="display:none">
+    <div class="kb-color-grid" id="kb-color-grid"></div>
+  </div>
+  <div class="kb-color-dropdown" id="kb-highlight-dropdown" style="display:none">
+    <div class="kb-color-grid" id="kb-highlight-grid"></div>
+  </div>
+  <div class="kb-color-dropdown" id="kb-fontsize-dropdown" style="display:none">
+    <div class="kb-fontsize-list" id="kb-fontsize-list">
+      <button data-size="12px">12px</button>
+      <button data-size="14px">14px</button>
+      <button data-size="16px">16px</button>
+      <button data-size="18px">18px</button>
+      <button data-size="20px">20px</button>
+      <button data-size="24px">24px</button>
+      <button data-size="28px">28px</button>
+    </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div class="kb-context-menu" id="kb-context-menu" style="display:none"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     AUTH OVERLAYS (云端模式登录 / 首次运行引导)
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="login-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-card">
+    <img src="/img/logo.png?v=136" alt="SKYLAND">
+    <h2>SKYLAND 云端登录</h2>
+    <p class="auth-sub">请输入服务端账号登录</p>
+    <form id="login-form">
+      <input type="text" id="login-username" class="kb-modal-input" placeholder="用户名" aria-label="用户名" autocomplete="username">
+      <input type="password" id="login-password" class="kb-modal-input" placeholder="密码" aria-label="密码" autocomplete="current-password">
+      <button type="submit" id="login-submit-btn">登 录</button>
+      <div id="login-error" class="auth-error" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<div id="admin-setup-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-card">
+    <img src="/img/logo.png?v=136" alt="SKYLAND">
+    <h2>创建管理员账号</h2>
+    <p class="auth-sub">服务端首次启动 — 请设置管理员账号密码</p>
+    <form id="admin-setup-form">
+      <input type="text" id="admin-setup-username" class="kb-modal-input" placeholder="用户名（2-32 位字母数字）" aria-label="用户名" autocomplete="username">
+      <input type="password" id="admin-setup-password" class="kb-modal-input" placeholder="密码（至少 8 位）" aria-label="密码" autocomplete="new-password">
+      <input type="password" id="admin-setup-password2" class="kb-modal-input" placeholder="确认密码" aria-label="确认密码" autocomplete="new-password">
+      <button type="submit" id="admin-setup-btn">创建管理员账号</button>
+      <div id="admin-setup-error" class="auth-error" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<div id="setup-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-card" style="width:440px">
+    <img src="/img/logo.png?v=136" alt="SKYLAND">
+    <h2>欢迎使用 SKYLAND</h2>
+    <p class="auth-sub">首次运行 — 请选择运行模式</p>
+    <div class="setup-card selected" data-mode="standalone" role="button" tabindex="0" aria-label="选择一体模式">
+      <div class="setup-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="17" height="17"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> 一体模式（推荐）</div>
+      <div class="setup-card-desc">本机独立运行，无需联网与登录，数据存储在本地，开箱即用。</div>
+    </div>
+    <div class="setup-card" data-mode="client" role="button" tabindex="0" aria-label="选择客户端模式">
+      <div class="setup-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="17" height="17"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="6" y="7" width="12" height="6" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg> 客户端模式</div>
+      <div class="setup-card-desc">连接云端 SKYLAND 服务器，数据托管在服务端，需账号登录；本机仍可接收 Windows 通知提醒。</div>
+    </div>
+    <div class="setup-card" data-mode="server" role="button" tabindex="0" aria-label="选择云端服务端模式">
+      <div class="setup-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="17" height="17"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg> 云端服务端模式</div>
+      <div class="setup-card-desc">作为数据与服务托管端，供其他客户端连接；启用登录验证、账号管理与访问白名单。</div>
+    </div>
+    <div id="setup-client-field" style="display:none;width:100%;margin-bottom:8px">
+      <input type="text" id="setup-server-url" class="kb-modal-input" placeholder="服务器地址，如 http://192.168.1.100:3000" aria-label="服务器地址" autocomplete="off">
+    </div>
+    <div id="setup-server-field" style="display:none;width:100%;margin-bottom:8px">
+      <input type="text" id="setup-server-bind" class="kb-modal-input" placeholder="监听地址（默认 0.0.0.0:3000）" aria-label="监听地址" autocomplete="off">
+    </div>
+    <button id="setup-confirm-btn" class="auth-primary-btn" style="width:100%">保存并应用</button>
+    <div id="setup-error" class="auth-error" aria-live="polite"></div>
+  </div>
+</div>
+
+<div id="setup-done-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-card">
+    <img src="/img/logo.png?v=136" alt="SKYLAND">
+    <h2>✓ 设置完成</h2>
+    <p class="auth-sub" id="setup-done-msg"></p>
+    <button id="setup-done-ok" class="auth-primary-btn" style="width:100%">开始使用</button>
+  </div>
+</div>
+
+<script src="/js/marked.min.js?v=136"></script>
+<script src="/js/highlight.min.js?v=136"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<!-- 存储键迁移必须最先执行：后续模块在 IIFE 里就读取 localStorage -->
+<script src="/js/storage-migrate.js?v=136"></script>
+<script src="/js/auth.js?v=136"></script>
+<script src="/js/settings-store.js?v=136"></script>
+<script src="/js/router.js?v=136"></script>
+<script src="/js/home.js?v=136"></script>
+<script src="/js/app.js?v=136"></script>
+<script src="/js/kb.js?v=136"></script>
+<script src="/js/todo.js?v=136"></script>
+<script src="/js/image.js?v=136"></script>
+<script src="/js/settings.js?v=136"></script>
+<script src="/js/tasks.js?v=136"></script>
+<script src="/js/settings2.js?v=136"></script>
+<script src="/js/workdir.js?v=136"></script>
+<script src="/js/ws-tree.js?v=136"></script>
+<script src="/js/nodes.js?v=136"></script>
+
+<!-- Unified AI Settings Modal -->
+<div class="ai-settings-overlay" id="ai-settings-overlay" style="display:none">
+  <div class="ai-settings-modal">
+    <div class="ai-settings-tabs">
+      <span class="ai-settings-title">图片生成模型设置</span>
+      <button class="ai-settings-close-btn" id="ai-settings-close">×</button>
+    </div>
+    <div class="ai-settings-content">
+      <!-- LLM 模型配置在统一设置面板「模型与搜索」页（原独立 Tab 与其完全重复，已并入） -->
+      <div class="ai-settings-pane active" id="ai-pane-image">
+        <div class="ai-settings-provider" style="margin-bottom:12px">
+          <label class="ai-settings-label">失败自动重试次数 <span style="font-size:11px;color:var(--text-muted)">(0-10，默认 5；网络错误 / 5xx / 响应异常时自动重试)</span></label>
+          <input type="number" id="ai-img-retry" class="ai-settings-input" min="0" max="10" step="1" value="5">
+        </div>
+        <div id="ai-image-providers"></div>
+        <div style="margin-top:12px;text-align:right">
+          <button id="ai-image-save" class="ai-settings-btn ai-settings-btn-primary">保存图片生成配置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 操作授权窗口（对齐 Claude 权限对话框三选项）— approval_request 事件触发 + Windows 通知 -->
+<div class="approval-overlay" id="approval-overlay" style="display:none">
+  <div class="approval-dialog">
+    <div class="approval-dialog-title">操作授权</div>
+    <div class="approval-dialog-body">
+      <div class="approval-action" id="approval-action"></div>
+      <div class="approval-target" id="approval-target"></div>
+      <div class="approval-detail" id="approval-detail"></div>
+    </div>
+    <div class="approval-countdown" id="approval-countdown">180 秒后自动拒绝</div>
+    <div class="approval-dialog-footer">
+      <button class="approval-btn approval-btn-deny" id="approval-btn-deny">拒绝 <span class="approval-key">3</span></button>
+      <button class="approval-btn approval-btn-session" id="approval-btn-session">本次对话允许 <span class="approval-key">2</span></button>
+      <button class="approval-btn approval-btn-once" id="approval-btn-once">允许一次 <span class="approval-key">1</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Initialize AI Settings after all scripts load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof AISettings !== 'undefined') AISettings.init();
+  });
+</script>
+</body>
+</html>

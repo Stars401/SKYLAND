@@ -1,0 +1,37 @@
+[package]
+name = "skyland-web"
+version.workspace = true
+edition.workspace = true
+description = "Skyland Web GUI"
+authors.workspace = true
+
+[lib]
+name = "skyland_web"
+path = "src/lib.rs"
+
+[dependencies]
+axum = { workspace = true }
+tokio = { workspace = true }
+tower-http = { workspace = true }
+rust-embed = { workspace = true }
+mime_guess = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+futures = { workspace = true }
+skyland-lib = { workspace = true }
+toml = { workspace = true }
+async-stream = { workspace = true }
+reqwest = { workspace = true }
+base64 = "0.22"
+chrono = { workspace = true }
+argon2 = { workspace = true }
+rand = { workspace = true }
+regex = { workspace = true }
+docx-rs = { workspace = true }
+rust_xlsxwriter = { workspace = true }
+genpdf = { workspace = true }
+zip = { workspace = true }
+winreg = "0.55"
+
+[dev-dependencies]
+tempfile = { workspace = true }

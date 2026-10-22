@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0",
+  "created": "2026-05-06",
+  "metrics": {
+    "board_parse_50tasks_ms": { "target": 100, "unit": "ms" },
+    "board_parse_throughput": { "target": 500, "unit": "tasks/s" },
+    "session_parse_ms": { "target": 10, "unit": "ms" },
+    "grpc_health_latency_ms": { "target": 50, "unit": "ms" },
+    "grpc_taskboard_latency_ms": { "target": 50, "unit": "ms" },
+    "concurrent_requests": { "target": 10, "unit": "connections" },
+    "terminal_render_latency_ms": { "target": 50, "unit": "ms" },
+    "daemon_response_time_ms": { "target": 1500, "unit": "ms" },
+    "daemon_availability_pct": { "target": 99.99, "unit": "%" }
+  }
+}

@@ -1,0 +1,23 @@
+[package]
+name = "skyland-tests"
+version.workspace = true
+edition.workspace = true
+description = "Skyland 集成测试和端到端测试套件"
+authors.workspace = true
+
+[dependencies]
+tokio = { workspace = true }
+tonic = { workspace = true }
+prost = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tempfile = { workspace = true }
+skyland-lib = { workspace = true }
+skyland-daemon = { workspace = true }
+tokio-stream = { workspace = true, features = ["net"] }
+
+[dev-dependencies]
+assert_cmd = { workspace = true }
+predicates = { workspace = true }

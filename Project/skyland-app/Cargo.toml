@@ -1,0 +1,34 @@
+[package]
+name = "skyland-app"
+version.workspace = true
+edition.workspace = true
+description = "Skyland Desktop App (Tauri)"
+authors.workspace = true
+
+[dependencies]
+skyland-web = { path = "../skyland-web" }
+skyland-lib = { path = "../lib" }
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-shell = "2"
+tauri-plugin-single-instance = "2"
+tauri-plugin-dialog = "2"
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+axum = { workspace = true }
+tower-http = { workspace = true }
+chrono = { workspace = true }
+rfd = { workspace = true }
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[lib]
+name = "skyland_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[package.metadata.bundle]
+identifier = "com.skyland.app"
+
+[package.metadata.tauri-winres]
+icon = "icons/icon.ico"
