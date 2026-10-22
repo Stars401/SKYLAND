@@ -2,7 +2,7 @@
 
 **制作更易用的 Agent 工作站。**
 
-[English](README.md) | 简体中文
+简体中文 | [English](README.en.md)
 
 SKYLAND 将 Agent 对话、定时任务、待办事项与 memos 同步、AI 生图、节点工作流和 Markdown 知识库放进同一个桌面工作区。把对话变成行动，把有用的结果留下来，再用于下一项任务。
 

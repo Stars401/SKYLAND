@@ -1,105 +1,105 @@
 # SKYLAND
 
-**An easier-to-use Agent workstation.**
+**制作更易用的 Agent 工作站。**
 
-English | [简体中文](README.zh-CN.md)
+简体中文 | [English](README.en.md)
 
-SKYLAND brings Agent conversations, scheduled tasks, to-dos with memos integration, image generation, and a Markdown knowledge base into one desktop workspace. Turn conversations into actions, keep useful results, and reuse them in the next task.
+SKYLAND 将 Agent 对话、定时任务、待办事项与 memos 同步、AI 生图、节点工作流和 Markdown 知识库放进同一个桌面工作区。把对话变成行动，把有用的结果留下来，再用于下一项任务。
 
-[Download for Windows](https://github.com/Stars401/SKYLAND/releases) · [MIT License](LICENSE)
+[下载 Windows 版本](https://github.com/Stars401/SKYLAND/releases) · [MIT 许可证](LICENSE)
 
-## Get Started
+## 开始使用
 
-1. Download the Windows x64 installer from [GitHub Releases](https://github.com/Stars401/SKYLAND/releases). The current public release is a preview.
-2. Launch SKYLAND and select a data directory when prompted, or use the default.
-3. Configure your model provider, endpoint, model, and API key in Settings. Configure an image provider separately for image generation.
-4. Start an Agent conversation, capture to-dos, or create a scheduled task.
+1. 在 [GitHub Releases](https://github.com/Stars401/SKYLAND/releases) 下载 Windows x64 安装包。当前公开版本为预览版。
+2. 启动 SKYLAND，按提示选择数据目录，或使用默认目录。
+3. 在设置中填写自己的模型服务商、接口地址、模型与 API Key。使用生图功能时，另行配置图片服务商。
+4. 开始 Agent 对话、记录待办，或创建一项定时任务。
 
-Service availability, supported parameters, and costs depend on the providers you configure. The interface uses system fonts by default.
+服务可用性、支持的参数和调用费用由你配置的服务决定。软件字体默认跟随系统。
 
-## Features in Pictures
+## 功能与使用效果
 
-These eight screenshots show real project interfaces from development; layout and wording may vary by release. They show a Chinese UI; English documentation does not imply full English UI localization.
+以下 8 张图片来自项目实际界面，展示开发过程中的典型工作流，具体布局与文字可能随版本调整。截图采用中文界面，提供英文介绍不代表界面已完整英文化。
 
-### Agent Conversations
+### Agent 对话
 
-Work with an Agent in a workspace, switch configured models and execution modes, and revisit conversation history. Follow progress, tool calls, context usage, plans, attachments, outputs, and sources in the execution panel.
+在工作区中与 Agent 协作，切换已配置的模型与执行模式，随时回看历史会话。执行面板汇总运行进度、工具调用、上下文用量、计划、附件、输出与来源，让任务过程更容易跟踪。
 
-Tools connect conversations to knowledge-base searches, document reading, and to-do management. The Agent can create to-dos and scheduled tasks where the execution mode permits. Available tools and services determine its actual capabilities.
+对话可通过工具检索和阅读知识库、查看待办，并在执行模式允许时创建待办或定时任务。Agent 的实际执行范围取决于可用工具与服务配置。
 
-![Agent conversations with workspace history and execution details](docs/images/agent-chat.png)
+![Agent 对话：工作区、历史会话与执行详情](docs/images/agent-chat.png)
 
-### Scheduled Tasks
+### 定时任务
 
-Schedule an Agent prompt once, daily, on selected weekdays, or at a recurring interval. Review previous and upcoming runs, execution counts, and results; run tasks manually or edit their schedules.
+将 Agent 提示词设置为单次、每天、每周指定日期或固定间隔执行。在任务列表中查看上次与下次执行时间、执行次数与结果，也能手动运行任务或修改计划。
 
-For example, schedule a daily technology briefing and let the Agent gather and organize information using its configured tools. The SKYLAND service must remain running for scheduled execution.
+例如，每天定时整理科技日报，让 Agent 使用已配置的工具搜集和组织信息。定时执行依赖 SKYLAND 服务保持运行。
 
-![Scheduled Agent tasks with run status and schedule controls](docs/images/scheduled-tasks.png)
+![定时任务：任务状态、运行记录与计划管理](docs/images/scheduled-tasks.png)
 
-### Today's To-Dos
+### 当日待办
 
-Capture tasks with categories, priorities, due dates, and reminders. Quick-entry syntax supports category tags, priority markers, and reminder times. Completion counts, overdue items, recent completion rates, and streak statistics help you review the day.
+记录每天要做的事，为条目添加分类、优先级、截止日期和提醒。速记输入支持分类标签、优先级标记与提醒时间；完成数、逾期事项、近期完成率和连续完成天数帮助回顾当天进展。
 
-![Daily to-dos with reminders, priorities, and completion statistics](docs/images/todo-today.png)
+![当日待办：提醒、优先级与完成情况统计](docs/images/todo-today.png)
 
-### Timeline and memos Integration
+### 全局时间线与 memos 同步
 
-Browse tasks across dates in a grouped timeline, filter by category, and revisit completed or unfinished items beyond today's list.
+用按日期分组的时间线浏览跨天事项，按分类筛选，回看历史完成与未完成条目，让任务记录不局限于今天。
 
-Connect a [memos](https://github.com/usememos/memos) instance to pull entries into SKYLAND to-dos. Imports merge into the task list, with optional polling every 15 minutes while the service runs. Synchronization imports from memos into SKYLAND; SKYLAND changes are not written back to memos.
+连接 [memos](https://github.com/usememos/memos) 实例后，可将远端条目拉取并合并到 SKYLAND 待办。支持按需拉取，也可开启每 15 分钟轮询，轮询依赖服务运行。当前方向为 memos → SKYLAND，不会将 SKYLAND 中的修改回写到 memos。
 
-![To-do timeline grouped by date with calendar navigation](docs/images/todo-timeline.png)
+![待办全局时间线：日期分组与日历导航](docs/images/todo-timeline.png)
 
-### Image Generation Terminal
+### AI 生图终端
 
-Generate images from prompts in a dedicated workspace. Select a configured provider, resolution, quality, and style; use reference images where supported. Browse generation history, inspect results, and download or delete images.
+在独立的生图工作区中输入提示词，选择已配置的服务商、分辨率、质量和风格。服务商支持时可使用参考图；生成后可浏览历史缩略图、检查结果、下载或删除图片。
 
-Reference-image editing and generation parameters depend on the provider and model.
+参考图编辑与具体生成参数的支持范围取决于服务商和模型。
 
-![Image generation terminal with controls, history, and result preview](docs/images/image-studio.png)
+![AI 生图终端：参数设置、历史图片与结果预览](docs/images/image-studio.png)
 
-### Visual Image Workflows
+### 节点生图工作流
 
-Connect prompts, text templates, style presets, image inputs, generation, and output nodes into reusable workflows. Save and load workflows to avoid repeating the same setup.
+将提示词、文本模板、风格预设、图片输入、生成与输出节点连接起来，构建可复用的生图流程。保存和加载工作流，减少每次生成前的重复配置。
 
-The editor also includes image resizing and ORM texture-channel packing for art asset workflows. Node parameters take effect where the selected backend supports them.
+编辑器还提供图片缩放、ORM 贴图通道打包等美术资产处理节点。各节点参数是否生效，以所选后端的实际支持为准。
 
-![Node-based image workflow with connected inputs, generation, and outputs](docs/images/image-workflow.png)
+![节点生图工作流：输入、生成与输出节点连接](docs/images/image-workflow.png)
 
-### Markdown Editing
+### Markdown 源码编辑
 
-Organize documents in knowledge-base folders and edit Markdown with formatting tools, an outline, and source/preview views. Keep notes, research, and task outputs alongside the Agent workflows that use them.
+在知识库文件夹中组织文档，通过格式工具栏、大纲、源码与预览视图编辑 Markdown。将笔记、研究资料与任务产出保存在 Agent 工作流旁边，方便继续整理和使用。
 
-![Markdown source editing and rendered preview](docs/images/markdown-editor.png)
+![Markdown 编辑：源码与渲染预览](docs/images/markdown-editor.png)
 
-### Knowledge Base Reading
+### 知识库文档查阅
 
-Read formatted documents with headings, tables, code blocks, and a navigable outline. Folder navigation, document search, and statistics help you find accumulated knowledge. Agent tools can search and read this material during conversations.
+阅读包含标题、表格和代码块的格式化文档，通过大纲定位章节。文件夹导航、文档搜索与统计帮助查找和回顾积累的知识；Agent 也可以在对话中通过工具检索和阅读这些资料。
 
-![Knowledge base reader with navigation, outline, and formatted content](docs/images/knowledge-reader.png)
+![知识库文档查阅：目录导航、大纲与格式化内容](docs/images/knowledge-reader.png)
 
-## Project Evolution
+## 项目迭代
 
-SKYLAND grew from an early terminal Agent prototype into a desktop workstation. Its iteration records trace streaming conversations and multiple providers, the Markdown knowledge base, image generation and node workflows, richer to-dos and reminders, conversation tools for knowledge and tasks, scheduled Agent execution, and workspace/provider management.
+SKYLAND 从早期终端 Agent 原型逐步发展为桌面工作站。迭代记录涵盖流式对话与多服务商接入、Markdown 知识库、AI 生图与节点工作流、待办与提醒增强、对话与知识库及待办联动、定时 Agent 执行，以及工作区和服务商管理。
 
-This introduction reflects those implemented capabilities and the current source. Historical plans also contain earlier designs and future ideas; they are not promises of functionality in the public preview.
+本介绍根据这些迭代记录和当前源码整理，以已实现能力为依据。历史计划中还包含旧设计与后续设想，不代表公开预览版已经提供全部规划功能。
 
-## Data and Privacy
+## 数据与隐私
 
-On Windows, the default data directory is `%APPDATA%/SKYLAND`; you can choose a directory during first launch. Configuration, credentials, conversations, and user content are stored locally. Upgrades may reuse existing local data.
+Windows 默认数据目录为 `%APPDATA%/SKYLAND`，也可在首次启动时选择目录。配置、认证信息、会话与用户内容保存在本机数据目录；升级可能沿用已有本机数据。
 
-The source distribution and installer do not include the developer's keys, accounts, conversations, or personal configuration. Commercial font files are not distributed. Configure your own credentials and keep real keys and runtime data out of Git commits.
+公开源码和安装包不包含开发者密钥、账号、聊天记录或个人配置，也不分发商业字体文件。请自行配置凭据，不要将真实密钥或运行数据提交到 Git 仓库。
 
-The preview is recommended for personal use on a single machine. Separate machines and operating-system accounts normally keep their own data. Multi-user authorization boundaries within a shared service have not undergone a complete security audit; do not deploy this preview as a public multi-tenant service.
+当前预览版推荐个人单机使用。不同电脑和操作系统账号通常分别保存数据；同一服务上的多用户权限边界尚未经过完整安全审计，请勿直接作为公开多租户服务部署。
 
-Model requests may send prompts, selected content, and attachments to your configured providers. Choose services accordingly. Local data storage does not mean model inference runs offline.
+模型请求可能将提示词、选中的内容和附件发送至你配置的服务商。请根据内容选择合适的服务；本地保存数据不代表模型在本机离线推理。
 
-## Build from Source
+## 源码构建
 
-The desktop app uses Rust, Tauri 2, and WebView2. The web service uses Axum with an HTML/CSS/JavaScript interface.
+桌面端采用 Rust、Tauri 2 与 WebView2，Web 服务使用 Axum，界面由 HTML、CSS 和 JavaScript 构成。
 
-For the Windows installer, install stable Rust, Windows C++ build tools, the Protocol Buffers compiler (`protoc`), WebView2, and Tauri CLI 2:
+构建 Windows 安装包需要 Rust 稳定版、Windows C++ 构建工具、Protocol Buffers 编译器（`protoc`）、WebView2 与 Tauri CLI 2：
 
 ```powershell
 cargo install tauri-cli --version "^2"
@@ -107,17 +107,17 @@ cd Project/skyland-app
 cargo tauri build --bundles nsis
 ```
 
-To run the web service for development:
+开发时运行 Web 服务：
 
 ```powershell
 cd Project
 cargo run -p skyland-web
 ```
 
-## Contributing
+## 参与贡献
 
-Bug reports and focused improvements are welcome through [Issues](https://github.com/Stars401/SKYLAND/issues) and pull requests. Include the app version, reproduction steps, and expected behavior. Remove keys, private endpoints, and personal content from shared logs and screenshots.
+欢迎通过 [Issues](https://github.com/Stars401/SKYLAND/issues) 和 Pull Request 反馈问题或提交改进。报告问题时请提供版本、复现步骤与预期行为；分享日志和截图前，请移除密钥、私人服务地址与个人内容。
 
-## License
+## 许可证
 
-Project code uses the [MIT License](LICENSE). Third-party dependencies retain their respective licenses; bundled frontend libraries include marked (MIT) and highlight.js (BSD-3-Clause).
+项目代码使用 [MIT License](LICENSE)。第三方依赖保留各自许可证；随附前端库包括 marked（MIT）和 highlight.js（BSD-3-Clause）。
